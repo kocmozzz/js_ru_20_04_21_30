@@ -1,20 +1,15 @@
-import React, {Component} from 'react'
+import React, {Component} from 'react';
+import CommentsList from './CommentsList';
 
 export default class Article extends Component {
-/*
-    constructor() {
-        super()
-        this.state = {
-            isOpen: false
-        }
-    }
-*/
     state = {
-        isOpen: false
+        isOpen: false,
+        showComments: false
     }
 
     render() {
-        const {article} = this.props
+        const {article} = this.props;
+
         return (
             <section>
                 <h2 onClick={this.toggleOpen}>
@@ -26,12 +21,52 @@ export default class Article extends Component {
     }
 
     getBody() {
-        return this.state.isOpen && <div>{this.props.article.text}</div>
+        const { article } = this.props;
+        const { comments } = article;
+        const { showComments } = this.state;
+
+        return this.state.isOpen && (
+            <div>
+                <div>{article.text}</div>
+                {
+                    comments && comments.length
+                    ? this.getCommentsLink()
+                    : this.getEmptyCommentsLink()
+                }
+                { showComments && <CommentsList comments={comments} /> }
+            </div>
+        )
+    }
+
+    getCommentsLink() {
+        const { showComments } = this.state;
+
+        return (
+            <a href="#" onClick={this.toggleComments}>
+                {
+                    showComments
+                    ? <span>Скрыть комментарии</span>
+                    : <span>Показать комментарии</span>
+                }
+            </a>
+        )
+    }
+
+    getEmptyCommentsLink() {
+        return (<strong>Комментариев пока нет</strong>);
     }
 
     toggleOpen = (ev) => {
         this.setState({
             isOpen: !this.state.isOpen
-        })
+        });
+    }
+
+    toggleComments = (ev) => {
+        ev.preventDefault();
+
+        this.setState({
+            showComments: !this.state.showComments
+        });
     }
 }
