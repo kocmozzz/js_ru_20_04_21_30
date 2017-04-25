@@ -5,10 +5,8 @@ export default function Comment ({comment}) {
 
     return (
         <li>
-            <div>
-                <strong>{user}</strong>
-            </div>
-            <div>{text}</div>
+            <h4>{user}</h4>
+            <p>{text}</p>
         </li>
     );
 }
