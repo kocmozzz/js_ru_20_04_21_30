@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import CommentsList from './CommentsList';
+import Toggler from './Toggler';
 
 export default class Article extends Component {
     state = {
-        isOpen: false,
-        showComments: false
+        isOpen: false
     }
 
     render() {
@@ -22,51 +22,28 @@ export default class Article extends Component {
 
     getBody() {
         const { article } = this.props;
-        const { comments } = article;
+        const { comments = [] } = article;
         const { showComments } = this.state;
+        const togglerProps = {
+          activeText: "Скрыть комментарии",
+          inactiveText: "Показать комментарии",
+          labelShown: !!comments.length,
+          isOpen: !comments.length
+        };
 
         return this.state.isOpen && (
-            <div>
+            <article>
                 <div>{article.text}</div>
-                {
-                    comments && comments.length
-                    ? this.getCommentsLink()
-                    : this.getEmptyCommentsLink()
-                }
-                { showComments && <CommentsList comments={comments} /> }
-            </div>
+                <Toggler {...togglerProps}>
+                  <CommentsList comments={comments} />
+                </Toggler>
+            </article>
         )
-    }
-
-    getCommentsLink() {
-        const { showComments } = this.state;
-
-        return (
-            <a href="#" onClick={this.toggleComments}>
-                {
-                    showComments
-                    ? <span>Скрыть комментарии</span>
-                    : <span>Показать комментарии</span>
-                }
-            </a>
-        )
-    }
-
-    getEmptyCommentsLink() {
-        return (<strong>Комментариев пока нет</strong>);
     }
 
     toggleOpen = (ev) => {
         this.setState({
             isOpen: !this.state.isOpen
-        });
-    }
-
-    toggleComments = (ev) => {
-        ev.preventDefault();
-
-        this.setState({
-            showComments: !this.state.showComments
         });
     }
 }
