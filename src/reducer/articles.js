@@ -17,14 +17,14 @@ export default (state = initialState, action) => {
         case DELETE_ARTICLE:
             return Object.assign({}, {articles: state.articles.filter(article => article.id !== payload.id)})
         case FILTER_ARTICLES_BY_ID:
+            if(!payload.selection.length) {
+                return Object.assign({}, initialState);
+            }
+            
             const dictionary = payload.selection.reduce((acc, cur) => {
                 acc[cur.value] = cur.label
                 return acc
             }, {})
-
-            if(!payload.selection.length) {
-                return Object.assign({}, initialState);
-            }
 
             return Object.assign({}, {
                 articles: initialState.articles.filter(({id}) => dictionary.hasOwnProperty(id))
