@@ -8,7 +8,6 @@ import {connect} from 'react-redux'
 class ArticleList extends Component {
     componentDidMount() {
         const ref = this.refs[this.props.articles[0].id]
-        console.log('---', ref, findDOMNode(ref))
     }
 
     render() {
@@ -35,7 +34,4 @@ ArticleList.propTypes = {
     isItemOpened: PropTypes.func.isRequired
 }
 
-export default connect(({articles}) => ({
-        articles
-    })
-)(accordion(ArticleList))
+export default connect(({articles: {articles}}) => ({articles}))(accordion(ArticleList))
