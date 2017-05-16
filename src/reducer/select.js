@@ -1,6 +1,7 @@
 import {articles as defaultArticles} from '../fixtures'
 import {SELECT_ARTICLES} from '../constants'
 
+// не уверен, что дефолтное значение надо пробрасывать так...
 const initialState = {
     articles: defaultArticles,
     selection: []
