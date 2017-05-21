@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import Select from 'react-select'
 import { connect } from 'react-redux'
 import { changeSelection } from '../../AC'
+import { articlesListSelector } from '../../selectors'
 
 import 'react-select/dist/react-select.css'
 
@@ -19,16 +20,15 @@ class SelectFilter extends Component {
             value: article.id
         }))
 
-        return <Select
-            options={options}
-            value={selected}
-            multi={true}
-            onChange={this.handleChange}
-        />
+        return <Select options={options} value={selected} multi={true} onChange={this.handleChange} />
     }
 }
 
-export default connect(state => ({
-    selected: state.filters.selected,
-    articles: state.articles
-}), { changeSelection })(SelectFilter)
+function createMapStateToProps(state, ownProps) {
+    return {
+        articles: articlesListSelector(state, ownProps),
+        selected: state.filters.selected
+    }
+}
+
+export default connect(createMapStateToProps, { changeSelection })(SelectFilter)

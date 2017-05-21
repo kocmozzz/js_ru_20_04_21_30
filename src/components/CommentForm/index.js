@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
 import './style.css'
+import { addComment } from '../../AC/index'
 
 class CommentForm extends Component {
     static propTypes = {
-
+        articleId: PropTypes.string.isRequired
     };
 
     state = {
@@ -29,6 +31,17 @@ class CommentForm extends Component {
     handleSubmit = ev => {
         ev.preventDefault()
         console.log('---', this.state)
+
+        if (this.state.user.length < 10) return;
+
+        const comment = {
+            articleId: this.props.articleId,
+            user: this.state.user,
+            text: this.state.comment
+        }
+
+        this.props.addComment(comment);
+
         this.setState({
             user: '',
             comment: ''
@@ -46,4 +59,4 @@ class CommentForm extends Component {
     }
 }
 
-export default CommentForm
+export default connect(null, { addComment })(CommentForm)

@@ -5,6 +5,7 @@ import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 import './style.css'
 import {connect} from 'react-redux'
 import {deleteArticle} from '../../AC/index'
+import {articleSelectorFactory} from '../../selectors'
 
 class Article extends Component {
 /*
@@ -16,11 +17,12 @@ class Article extends Component {
     }
 */
     static propTypes = {
-        article: PropTypes.shape({
-            title: PropTypes.string.isRequired,
-            text: PropTypes.string,
-            comments: PropTypes.array
-        }).isRequired
+        id: PropTypes.string.isRequired
+        // article: PropTypes.shape({
+        //     title: PropTypes.string.isRequired,
+        //     text: PropTypes.string,
+        //     comments: PropTypes.array
+        // }).isRequired
     }
 
     componentDidMount() {
@@ -28,7 +30,11 @@ class Article extends Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.isOpen != this.props.isOpen
+        return true;
+        // FIXME это условие не срабатывает, т к где-то ссылка на объект возвращается,
+        // а не новый объект
+        // return nextProps.isOpen != this.props.isOpen
+        //     || nextProps.article.comments.length != this.props.article.comments.length;
     }
 
     componentWillUpdate() {
@@ -36,7 +42,7 @@ class Article extends Component {
     }
 
     render() {
-        const {article, toggleOpen} = this.props
+        const {id, toggleOpen, article} = this.props
         return (
             <section>
                 <h2 onClick={toggleOpen}>
@@ -64,10 +70,20 @@ class Article extends Component {
         return this.props.isOpen && (
             <div>
                 {this.props.article.text}
-                <CommentList comments={this.props.article.comments}/>
+                <CommentList articleId={this.props.article.id} comments={this.props.article.comments}/>
             </div>
         )
     }
 }
 
-export default connect(null, { deleteArticle })(Article)
+function createMapStateToProps() {
+    const articleSelector = articleSelectorFactory();
+
+    return function mapStateToProps(state, ownProps) {
+        return {
+            article: articleSelector(state, ownProps)
+        }
+    }
+}
+
+export default connect(createMapStateToProps, { deleteArticle })(Article)

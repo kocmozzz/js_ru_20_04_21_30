@@ -1,6 +1,7 @@
 import {createStore, applyMiddleware, compose} from 'redux'
 import reducer from '../reducer/index'
 import logger from '../middlewares/logger'
+import uid from '../middlewares/uid'
 
 const composeEnhancers =
     typeof window === 'object' &&
@@ -11,6 +12,7 @@ const composeEnhancers =
 
 const enhancer = composeEnhancers(
     applyMiddleware(logger),
+    applyMiddleware(uid)
     // other store enhancers if any
 );
 
