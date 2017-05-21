@@ -9,16 +9,27 @@ export const filtratedArticlesSelector = createSelector(articlesGetter, filtersG
     console.log('---', 'recompute filtrated articles')
 
     const {selected, dateRange: {from, to}} = filters
-
-    return articles.filter(article => {
+    const articlesKeys = Object.keys(articles)
+    .filter(id => {
+        const article = articles[id];
         const published = Date.parse(article.date)
         return (!selected.length || selected.includes(article.id)) &&
             (!from || !to || (published > from && published < to))
-    })
+    });
+
+    return articlesKeys;
 })
 
 export const commentSelectorFactory = () => createSelector(commentsGetter, idGetter, (comments, id) => {
     console.log('---', 'find comment', id)
 
     return comments[id]
+})
+
+export const articlesListSelector = createSelector(articlesGetter, (articles) => {
+    return Object.keys(articles).map(id => articles[id])
+})
+
+export const articleSelectorFactory = () => createSelector(articlesGetter, idGetter, (articles, id) => {
+    return articles[id];
 })

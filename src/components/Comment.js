@@ -12,7 +12,7 @@ function Comment({comment}) {
 }
 
 Comment.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     //from connect decorator
     comment: PropTypes.shape({
         text: PropTypes.string,
