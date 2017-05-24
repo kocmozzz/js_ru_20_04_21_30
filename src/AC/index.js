@@ -1,5 +1,5 @@
 import { INCREMENT, DELETE_ARTICLE, CHANGE_DATE_RANGE, CHANGE_SELECTION, ADD_COMMENT, LOAD_ALL_ARTICLES,
-    LOAD_ARTICLE, START, SUCCESS, FAIL} from '../constants'
+    LOAD_ARTICLE, START, SUCCESS, FAIL, LOAD_ALL_COMMENTS, LOAD_COMMENT} from '../constants'
 import $ from 'jquery'
 
 export function increment() {
@@ -63,5 +63,12 @@ export function loadArticle(id) {
                     payload: { id, error }
                 }))
         }, 1000)
+    }
+}
+
+export function loadAllComments(articleId) {
+    return {
+        callAPI: `/api/comment?article=${articleId}`,
+        type: LOAD_ALL_COMMENTS
     }
 }
