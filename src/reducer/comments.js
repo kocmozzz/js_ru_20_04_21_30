@@ -16,7 +16,6 @@ const DefaultReducerState = Record({
 
 export default (comments = new DefaultReducerState(), action) => {
     const {type, payload, randomId, response} = action
-    console.log(type);
 
     switch (type) {
         case ADD_COMMENT:

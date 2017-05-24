@@ -10,7 +10,7 @@ import {connect} from 'react-redux'
 class CommentList extends Component {
 
   componentWillReceiveProps({isLoading, isLoaded, isOpen, loadAllComments, article}) {
-      if (!isLoading && !isLoaded && isOpen) loadAllComments(article.id)
+      if (!isLoading && isOpen && isOpen != this.props.isOpen) loadAllComments(article.id)
   }
 
   render() {
