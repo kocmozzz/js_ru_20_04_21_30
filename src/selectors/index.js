@@ -19,3 +19,7 @@ export const filteredArticlesSelector = createSelector(articlesGetter, filtersGe
 export const commentSelectorFactory = () => createSelector(commentsGetter, idGetter, (comments, id) => {
     return comments.getIn(['entities', id])
 })
+
+export const commentsIdsArraySelector = createSelector(commentsGetter, (comments) => {
+  return mapToArr(comments.get('entities')).map(comment => comment.id)
+})
