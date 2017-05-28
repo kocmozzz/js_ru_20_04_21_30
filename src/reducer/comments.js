@@ -12,6 +12,8 @@ const DefaultReducerState = Record({
     entities: new OrderedMap({}),
     loading: false,
     loaded: false,
+    page: 1,
+    limit: 5,
     total: 0
 })
 
@@ -28,12 +30,16 @@ export default (comments = new DefaultReducerState(), action) => {
             return comments.mergeIn(['entities'], arrayToMap(response, CommentModel))
 
         case LOAD_COMMENTS_BY_PAGE + START:
-            return comments.set('loading', true)
+            return comments
+                .set('loading', true)
+                .set('loaded', false)
 
         case LOAD_COMMENTS_BY_PAGE + SUCCESS:
             return comments
               .set('entities', arrayToMap(response.records, CommentModel))
               .set('total', response.total)
+              .set('page', payload.page)
+              .set('limit', payload.limit)
               .set('loading', false)
               .set('loaded', true)
     }

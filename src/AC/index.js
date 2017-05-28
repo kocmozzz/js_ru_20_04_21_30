@@ -57,7 +57,7 @@ export function loadCommentsByPage(page = 1, limit = 5) {
     return {
         type: LOAD_COMMENTS_BY_PAGE,
         callAPI: `/api/comment?limit=${limit}&offset=${(page - 1) * limit}`,
-        payload: { page }
+        payload: { page: +page, limit }
     }
 }
 
